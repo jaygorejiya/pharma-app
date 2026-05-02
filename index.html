@@ -1,793 +1,544 @@
 
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', sans-serif; }
-  .app-wrap { display: flex; flex-direction: column; align-items: center; gap: 32px; padding: 16px 0 32px; background: var(--color-background-tertiary, #f5f5f5); }
-  .screen-label { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
-  .phone { width: 340px; border-radius: 36px; border: 8px solid #1a1a1a; background: #fff; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.18); position: relative; }
-  .phone-notch { background: #1a1a1a; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 0 0 18px 18px; width: 120px; margin: 0 auto; position: relative; z-index: 10; margin-top: -1px; }
-  .phone-notch-dot { width: 10px; height: 10px; border-radius: 50%; background: #333; }
-  .phone-body { background: #F7FAFF; }
-  .status-bar { display: flex; justify-content: space-between; padding: 6px 16px 4px; background: #1352A1; }
-  .status-bar span { color: white; font-size: 10px; font-weight: 500; }
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+.wrap{display:flex;flex-direction:column;align-items:center;gap:32px;padding:20px 0 40px;background:#f0f4f8}
+.lbl{font-size:10px;font-weight:600;color:#888;letter-spacing:.08em;text-transform:uppercase;text-align:center;margin-bottom:6px}
+.phone{width:310px;border-radius:38px;border:8px solid #111;background:#fff;overflow:hidden;position:relative}
+.notch{background:#111;height:24px;width:100px;margin:0 auto;border-radius:0 0 16px 16px;position:relative;z-index:2;margin-top:-1px}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:5px 14px 3px}
+.sb span{font-size:9px;color:#fff}
+.sb.lt span{color:#222}
+.screen{background:#f7f7f7;min-height:520px}
 
-  /* HOME SCREEN */
-  .home-header { background: #1352A1; padding: 10px 14px 16px; }
-  .home-header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .location-row { display: flex; align-items: center; gap: 4px; }
-  .loc-label { font-size: 10px; color: rgba(255,255,255,0.7); }
-  .loc-val { font-size: 12px; color: #fff; font-weight: 600; }
-  .loc-arrow { color: rgba(255,255,255,0.8); font-size: 10px; }
-  .header-icons { display: flex; gap: 10px; }
-  .h-icon { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; }
-  .h-icon svg { width: 14px; height: 14px; fill: none; stroke: white; stroke-width: 1.5; }
-  .cart-badge { position: relative; }
-  .badge { position: absolute; top: -3px; right: -3px; background: #FF9800; color: white; border-radius: 50%; width: 14px; height: 14px; font-size: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
-  .search-bar { background: white; border-radius: 10px; display: flex; align-items: center; padding: 7px 10px; gap: 6px; }
-  .search-bar svg { width: 14px; height: 14px; stroke: #9CA3AF; fill: none; stroke-width: 1.5; flex-shrink: 0; }
-  .search-bar span { font-size: 11px; color: #9CA3AF; }
+/* SPLASH */
+.splash{background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:520px;padding:40px 24px}
+.sp-logo{width:72px;height:72px;border-radius:20px;background:#36B37E;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.sp-logo svg{width:40px;height:40px}
+.sp-name{font-size:22px;font-weight:700;color:#222;margin-bottom:4px}
+.sp-tag{font-size:12px;color:#888}
+.sp-loader{width:40px;height:3px;background:#eee;border-radius:2px;margin-top:40px;overflow:hidden;position:relative}
+.sp-loader-bar{width:60%;height:100%;background:#36B37E;border-radius:2px}
 
-  .home-body { padding: 12px; }
+/* LOGIN */
+.login-sc{background:#fff;padding:0}
+.login-top{background:#36B37E;padding:32px 20px 24px}
+.login-top h2{font-size:18px;font-weight:700;color:#fff;margin-bottom:4px}
+.login-top p{font-size:11px;color:rgba(255,255,255,0.8)}
+.login-body{padding:20px}
+.fl{font-size:11px;color:#555;font-weight:600;margin-bottom:4px}
+.fi{border:1.5px solid #e8e8e8;border-radius:8px;padding:10px 12px;font-size:12px;color:#222;background:#fafafa;margin-bottom:12px;width:100%}
+.fi.focused{border-color:#36B37E}
+.btn-green{background:#36B37E;color:#fff;border:none;border-radius:10px;width:100%;padding:12px 0;font-size:13px;font-weight:700;margin-bottom:12px}
+.or-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.or-line{flex:1;height:1px;background:#eee}
+.or-txt{font-size:10px;color:#aaa}
+.social-btn{background:#fff;border:1.5px solid #e8e8e8;border-radius:10px;width:100%;padding:9px 0;font-size:11px;font-weight:600;color:#444;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px}
+.g-circle{width:16px;height:16px;border-radius:50%;background:#EA4335;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.login-foot{text-align:center;font-size:10px;color:#aaa;margin-top:8px}
+.login-foot span{color:#36B37E;font-weight:600}
 
-  /* Banner */
-  .banner { background: linear-gradient(135deg, #1352A1 0%, #1a6bc7 100%); border-radius: 12px; padding: 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-  .banner-text .b-tag { background: rgba(255,255,255,0.2); color: white; font-size: 9px; padding: 2px 7px; border-radius: 20px; display: inline-block; margin-bottom: 5px; }
-  .banner-text h3 { color: white; font-size: 14px; font-weight: 700; line-height: 1.2; }
-  .banner-text p { color: rgba(255,255,255,0.8); font-size: 10px; margin-top: 3px; }
-  .banner-btn { background: #00C896; color: white; border: none; border-radius: 8px; padding: 5px 10px; font-size: 10px; font-weight: 600; white-space: nowrap; cursor: pointer; }
-  .banner-dots { display: flex; gap: 4px; justify-content: center; margin-top: 8px; }
-  .dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.35); }
-  .dot.active { background: white; width: 14px; border-radius: 3px; }
+/* HOME */
+.home-hd{background:#36B37E;padding:10px 14px 18px}
+.home-hd-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.loc-pill{display:flex;align-items:center;gap:4px}
+.loc-pill svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:2;flex-shrink:0}
+.loc-pill div small{font-size:9px;color:rgba(255,255,255,0.7);display:block}
+.loc-pill div span{font-size:12px;color:#fff;font-weight:700}
+.hd-icons{display:flex;gap:8px;align-items:center}
+.hd-ic{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center}
+.hd-ic svg{width:15px;height:15px;stroke:#fff;fill:none;stroke-width:1.5}
+.bell-badge{position:relative}
+.bb{position:absolute;top:-1px;right:-1px;width:8px;height:8px;border-radius:50%;background:#FF5630;border:1.5px solid #36B37E}
+.srch{background:#fff;border-radius:10px;display:flex;align-items:center;padding:8px 12px;gap:8px}
+.srch svg{width:14px;height:14px;stroke:#aaa;fill:none;stroke-width:1.5;flex-shrink:0}
+.srch span{font-size:11px;color:#aaa}
+.home-body{padding:12px}
 
-  /* Quick Actions */
-  .section-title { font-size: 13px; font-weight: 700; color: #111827; margin-bottom: 8px; }
-  .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
-  .qa-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-  .qa-icon { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-  .qa-label { font-size: 9px; color: #374151; text-align: center; font-weight: 500; line-height: 1.2; }
-  .qa1 { background: #E8F4FD; }
-  .qa2 { background: #FFF3E8; }
-  .qa3 { background: #E8FFF7; }
-  .qa4 { background: #FFF0F3; }
-  .qa5 { background: #EEF0FF; }
-  .qa6 { background: #FFFAE8; }
-  .qa7 { background: #F0FFF4; }
-  .qa8 { background: #FFF5F5; }
+/* Services grid — PRACTO STYLE: 2 cols */
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.svc-card{background:#fff;border-radius:12px;border:1px solid #f0f0f0;padding:12px 10px;display:flex;flex-direction:column;gap:6px}
+.svc-ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.svc-ic svg{width:20px;height:20px;fill:none;stroke-width:1.5}
+.svc-name{font-size:12px;font-weight:700;color:#222;line-height:1.2}
+.svc-desc{font-size:9px;color:#888;line-height:1.3}
+.svc-arrow{font-size:11px;color:#36B37E;font-weight:600;align-self:flex-end;margin-top:2px}
 
-  /* Categories */
-  .categories-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 14px; -ms-overflow-style: none; scrollbar-width: none; }
-  .categories-scroll::-webkit-scrollbar { display: none; }
-  .cat-chip { background: white; border: 1px solid #DDE8F5; border-radius: 20px; padding: 6px 12px; white-space: nowrap; font-size: 10px; color: #374151; font-weight: 500; flex-shrink: 0; }
-  .cat-chip.active { background: #1352A1; color: white; border-color: #1352A1; }
+.sec-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sec-t{font-size:13px;font-weight:700;color:#222}
+.see-all{font-size:10px;color:#36B37E;font-weight:600}
 
-  /* Products */
-  .products-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 14px; -ms-overflow-style: none; scrollbar-width: none; }
-  .products-scroll::-webkit-scrollbar { display: none; }
-  .product-card { background: white; border-radius: 12px; border: 1px solid #DDE8F5; padding: 10px; width: 120px; flex-shrink: 0; }
-  .product-img { width: 100%; height: 70px; border-radius: 8px; background: #E8F4FD; display: flex; align-items: center; justify-content: center; margin-bottom: 7px; position: relative; }
-  .product-img-inner { width: 50px; height: 50px; }
-  .discount-badge { position: absolute; top: 5px; left: 5px; background: #00C896; color: white; font-size: 8px; font-weight: 700; padding: 2px 5px; border-radius: 4px; }
-  .rx-badge { position: absolute; top: 5px; right: 5px; background: #FF9800; color: white; font-size: 7px; font-weight: 700; padding: 1px 4px; border-radius: 3px; }
-  .p-brand { font-size: 11px; font-weight: 700; color: #111827; margin-bottom: 1px; }
-  .p-generic { font-size: 9px; color: #6B7280; margin-bottom: 5px; line-height: 1.2; }
-  .p-price-row { display: flex; align-items: baseline; gap: 4px; margin-bottom: 6px; }
-  .p-price { font-size: 12px; font-weight: 700; color: #1352A1; }
-  .p-mrp { font-size: 9px; color: #9CA3AF; text-decoration: line-through; }
-  .add-btn { background: #1352A1; color: white; border: none; border-radius: 7px; width: 100%; padding: 5px 0; font-size: 10px; font-weight: 600; cursor: pointer; }
+/* Specialty chips */
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{background:#fff;border:1px solid #e8e8e8;border-radius:20px;padding:5px 12px;white-space:nowrap;font-size:10px;color:#444;font-weight:500;flex-shrink:0}
+.chip.act{background:#36B37E;color:#fff;border-color:#36B37E}
 
-  /* Why Choose */
-  .trust-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 14px; }
-  .trust-item { background: white; border: 1px solid #DDE8F5; border-radius: 10px; padding: 8px; display: flex; align-items: center; gap: 6px; }
-  .trust-dot { width: 22px; height: 22px; border-radius: 50%; background: #E8F4FD; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 11px; }
-  .trust-text { font-size: 9px; color: #374151; font-weight: 500; line-height: 1.3; }
+/* Doctor card */
+.doc-card{background:#fff;border-radius:12px;border:1px solid #f0f0f0;padding:12px;margin-bottom:8px;display:flex;gap:10px}
+.doc-ava{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0}
+.doc-info{flex:1}
+.doc-name{font-size:13px;font-weight:700;color:#222}
+.doc-spec{font-size:10px;color:#888;margin-bottom:3px}
+.doc-exp{font-size:10px;color:#555}
+.doc-rat{display:flex;align-items:center;gap:3px;margin-top:2px}
+.rat-badge{background:#36B37E;color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:4px}
+.rat-cnt{font-size:9px;color:#aaa}
+.doc-fee{font-size:11px;font-weight:700;color:#222;margin-top:4px}
+.doc-fee small{font-size:9px;color:#aaa;font-weight:400}
+.doc-avail{font-size:9px;color:#36B37E;font-weight:600}
+.consult-btn{background:#36B37E;color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:10px;font-weight:700;align-self:center;white-space:nowrap}
 
-  /* Bottom Nav */
-  .bottom-nav { background: white; border-top: 1px solid #DDE8F5; display: flex; padding: 6px 0 8px; }
-  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
-  .nav-item svg { width: 20px; height: 20px; stroke: #9CA3AF; fill: none; stroke-width: 1.5; }
-  .nav-item.active svg { stroke: #1352A1; }
-  .nav-label { font-size: 9px; color: #9CA3AF; }
-  .nav-item.active .nav-label { color: #1352A1; font-weight: 600; }
-  .nav-dot { width: 4px; height: 4px; border-radius: 50%; background: #1352A1; }
+/* Med card row */
+.med-card{background:#fff;border-radius:12px;border:1px solid #f0f0f0;padding:10px;margin-bottom:8px;display:flex;gap:10px;align-items:center}
+.med-img{width:44px;height:44px;border-radius:8px;background:#f0faf6;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.med-img svg{width:26px;height:26px}
+.med-info{flex:1}
+.med-name{font-size:12px;font-weight:700;color:#222}
+.med-gen{font-size:9px;color:#888;margin-top:1px}
+.med-pr{text-align:right;flex-shrink:0}
+.med-now{font-size:13px;font-weight:700;color:#36B37E}
+.med-mrp{font-size:9px;color:#aaa;text-decoration:line-through}
+.med-off{background:#E3FBF0;color:#1a7a50;font-size:8px;font-weight:700;padding:1px 5px;border-radius:4px;margin-top:2px;display:inline-block}
+.add-btn-sm{background:#36B37E;color:#fff;border:none;border-radius:6px;width:24px;height:24px;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 
-  /* PRODUCT DETAIL SCREEN */
-  .pd-header { background: white; padding: 10px 14px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #DDE8F5; }
-  .back-btn { width: 28px; height: 28px; border-radius: 50%; border: 1px solid #DDE8F5; display: flex; align-items: center; justify-content: center; }
-  .back-btn svg { width: 14px; height: 14px; stroke: #374151; fill: none; stroke-width: 2; }
-  .pd-header-title { font-size: 13px; font-weight: 700; color: #111827; flex: 1; }
-  .pd-body { background: #F7FAFF; }
-  .pd-image-section { background: white; padding: 14px; display: flex; flex-direction: column; align-items: center; }
-  .pd-img-main { width: 140px; height: 140px; border-radius: 14px; background: #E8F4FD; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
-  .pd-img-main svg { width: 80px; height: 80px; }
-  .pd-thumbs { display: flex; gap: 6px; }
-  .pd-thumb { width: 40px; height: 40px; border-radius: 8px; background: #E8F4FD; border: 2px solid transparent; }
-  .pd-thumb.active { border-color: #1352A1; }
-  .pd-info { background: white; margin: 8px 0; padding: 14px; }
-  .pd-rx { display: inline-flex; align-items: center; gap: 4px; background: #FFF3E8; border-radius: 5px; padding: 3px 8px; margin-bottom: 8px; }
-  .pd-rx span { font-size: 9px; color: #FF9800; font-weight: 600; }
-  .pd-brand { font-size: 16px; font-weight: 700; color: #111827; margin-bottom: 2px; }
-  .pd-comp { font-size: 11px; color: #6B7280; margin-bottom: 10px; line-height: 1.4; }
-  .pd-mfr { display: flex; align-items: center; gap: 5px; margin-bottom: 12px; }
-  .pd-mfr span { font-size: 10px; color: #6B7280; }
-  .pd-mfr-badge { background: #E8F4FD; border-radius: 4px; padding: 2px 6px; font-size: 9px; color: #1352A1; font-weight: 600; }
-  .pd-price-section { display: flex; align-items: flex-end; gap: 8px; margin-bottom: 10px; }
-  .pd-price-main { font-size: 22px; font-weight: 700; color: #1352A1; }
-  .pd-mrp { font-size: 13px; color: #9CA3AF; text-decoration: line-through; }
-  .pd-save { background: #E8FFF7; border-radius: 6px; padding: 3px 8px; }
-  .pd-save span { font-size: 10px; color: #00C896; font-weight: 700; }
-  .qty-add-row { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
-  .qty-sel { display: flex; align-items: center; gap: 0; border: 1.5px solid #1352A1; border-radius: 8px; overflow: hidden; }
-  .qty-btn { width: 30px; height: 32px; display: flex; align-items: center; justify-content: center; background: white; color: #1352A1; font-size: 16px; font-weight: 600; border: none; cursor: pointer; }
-  .qty-num { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #111827; background: #E8F4FD; }
-  .add-cart-btn { flex: 1; background: #1352A1; color: white; border: none; border-radius: 8px; height: 36px; font-size: 12px; font-weight: 700; cursor: pointer; }
-  .buy-now-btn { flex: 1; background: white; color: #1352A1; border: 1.5px solid #1352A1; border-radius: 8px; height: 36px; font-size: 12px; font-weight: 700; cursor: pointer; }
-  .offer-row { background: #E8FFF7; border-radius: 8px; padding: 8px 10px; display: flex; align-items: center; gap: 6px; }
-  .offer-row span { font-size: 10px; color: #00C896; font-weight: 500; }
-  .pd-tabs { display: flex; border-bottom: 1px solid #DDE8F5; background: white; margin-top: 8px; }
-  .pd-tab { flex: 1; padding: 9px 4px; text-align: center; font-size: 10px; color: #6B7280; font-weight: 500; border-bottom: 2px solid transparent; }
-  .pd-tab.active { color: #1352A1; border-bottom-color: #1352A1; font-weight: 700; }
-  .pd-tab-content { background: white; padding: 12px 14px; }
-  .pd-row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #F3F4F6; }
-  .pd-row:last-child { border-bottom: none; }
-  .pd-row-label { font-size: 11px; color: #6B7280; }
-  .pd-row-val { font-size: 11px; color: #111827; font-weight: 500; text-align: right; max-width: 55%; }
-  .rating-row { display: flex; align-items: center; gap: 6px; padding: 8px 0; }
-  .stars { color: #F59E0B; font-size: 13px; }
-  .rating-num { font-size: 16px; font-weight: 700; color: #111827; }
-  .rating-count { font-size: 10px; color: #6B7280; }
+/* Bottom nav */
+.bnav{background:#fff;border-top:1px solid #f0f0f0;display:flex;padding:7px 0 10px}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
+.ni svg{width:18px;height:18px;stroke:#bbb;fill:none;stroke-width:1.5}
+.ni.act svg{stroke:#36B37E}
+.ni span{font-size:8px;color:#bbb}
+.ni.act span{color:#36B37E;font-weight:600}
 
-  /* CART SCREEN */
-  .cart-header { background: white; padding: 10px 14px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #DDE8F5; }
-  .cart-body { padding: 10px; }
-  .cart-item { background: white; border-radius: 12px; border: 1px solid #DDE8F5; padding: 10px; margin-bottom: 8px; }
-  .cart-item-top { display: flex; gap: 10px; margin-bottom: 8px; }
-  .ci-img { width: 50px; height: 50px; border-radius: 8px; background: #E8F4FD; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .ci-img svg { width: 30px; height: 30px; }
-  .ci-info { flex: 1; }
-  .ci-brand { font-size: 12px; font-weight: 700; color: #111827; }
-  .ci-generic { font-size: 10px; color: #6B7280; margin-bottom: 4px; line-height: 1.2; }
-  .ci-rx { display: inline-flex; align-items: center; gap: 3px; background: #FFF3E8; border-radius: 4px; padding: 2px 5px; }
-  .ci-rx span { font-size: 8px; color: #FF9800; font-weight: 600; }
-  .cart-item-bot { display: flex; justify-content: space-between; align-items: center; }
-  .ci-qty { display: flex; align-items: center; gap: 0; border: 1.5px solid #DDE8F5; border-radius: 6px; overflow: hidden; }
-  .ci-qbtn { width: 24px; height: 24px; background: #F7FAFF; border: none; color: #1352A1; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-  .ci-qnum { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
-  .ci-price { font-size: 13px; font-weight: 700; color: #1352A1; }
-  .ci-remove { font-size: 9px; color: #EF4444; cursor: pointer; }
-  .bill-card { background: white; border-radius: 12px; border: 1px solid #DDE8F5; padding: 12px; margin-bottom: 8px; }
-  .bill-title { font-size: 12px; font-weight: 700; color: #111827; margin-bottom: 10px; }
-  .bill-row { display: flex; justify-content: space-between; padding: 5px 0; }
-  .bill-label { font-size: 11px; color: #6B7280; }
-  .bill-val { font-size: 11px; color: #111827; font-weight: 500; }
-  .bill-save { font-size: 11px; color: #00C896; font-weight: 600; }
-  .bill-divider { border: none; border-top: 1px dashed #DDE8F5; margin: 8px 0; }
-  .bill-total-row { display: flex; justify-content: space-between; }
-  .bill-total-label { font-size: 13px; font-weight: 700; color: #111827; }
-  .bill-total-val { font-size: 14px; font-weight: 700; color: #1352A1; }
-  .coupon-row { background: white; border-radius: 10px; border: 1px dashed #1352A1; padding: 10px; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-  .coupon-icon { width: 28px; height: 28px; border-radius: 50%; background: #E8F4FD; display: flex; align-items: center; justify-content: center; font-size: 13px; }
-  .coupon-text { flex: 1; }
-  .coupon-title { font-size: 11px; font-weight: 600; color: #1352A1; }
-  .coupon-sub { font-size: 9px; color: #6B7280; }
-  .coupon-arrow { font-size: 14px; color: #1352A1; }
-  .checkout-btn { background: #1352A1; color: white; border: none; border-radius: 12px; width: 100%; padding: 13px 0; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
-  .checkout-arrow { font-size: 16px; }
+/* DOCTOR DETAIL */
+.dd-hero{background:#fff;padding:16px}
+.dd-top{display:flex;gap:12px;margin-bottom:12px}
+.dd-ava{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0}
+.dd-meta h2{font-size:15px;font-weight:700;color:#222;margin-bottom:3px}
+.dd-meta p{font-size:11px;color:#888;margin-bottom:3px}
+.dd-meta .verified{display:inline-flex;align-items:center;gap:3px;background:#E3FBF0;border-radius:4px;padding:2px 7px}
+.dd-meta .verified span{font-size:9px;color:#1a7a50;font-weight:600}
+.dd-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid #f0f0f0;border-radius:10px;overflow:hidden}
+.dd-stat{padding:10px 8px;text-align:center;border-right:1px solid #f0f0f0}
+.dd-stat:last-child{border-right:none}
+.dd-stat-n{font-size:15px;font-weight:700;color:#222}
+.dd-stat-l{font-size:9px;color:#aaa;margin-top:1px}
+.dd-section{background:#fff;margin-top:6px;padding:12px 14px}
+.dd-sec-t{font-size:12px;font-weight:700;color:#222;margin-bottom:8px}
+.slot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.slot{border:1px solid #36B37E;border-radius:7px;padding:6px 4px;text-align:center;font-size:10px;color:#36B37E;font-weight:600}
+.slot.sel{background:#36B37E;color:#fff}
+.slot.na{border-color:#e8e8e8;color:#ccc}
+.book-btn{background:#36B37E;color:#fff;border:none;border-radius:10px;width:100%;padding:12px 0;font-size:13px;font-weight:700}
+.fee-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f5f5f5}
+.fee-row:last-child{border-bottom:none}
+.fee-l{font-size:11px;color:#666}
+.fee-v{font-size:11px;color:#222;font-weight:600}
 
-  /* ORDER SCREEN */
-  .orders-tabs { display: flex; background: white; border-bottom: 1px solid #DDE8F5; }
-  .order-tab { flex: 1; padding: 10px 0; text-align: center; font-size: 11px; color: #6B7280; border-bottom: 2px solid transparent; font-weight: 500; }
-  .order-tab.active { color: #1352A1; border-bottom-color: #1352A1; font-weight: 700; }
-  .orders-body { padding: 10px; }
-  .order-card { background: white; border-radius: 12px; border: 1px solid #DDE8F5; padding: 12px; margin-bottom: 8px; }
-  .oc-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-  .oc-id { font-size: 11px; color: #6B7280; }
-  .oc-status { background: #E8F4FD; color: #1352A1; font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 12px; }
-  .oc-status.shipped { background: #FFF3E8; color: #FF9800; }
-  .oc-status.delivered { background: #E8FFF7; color: #00C896; }
-  .oc-items { font-size: 12px; font-weight: 600; color: #111827; margin-bottom: 6px; }
-  .oc-total { font-size: 11px; color: #6B7280; margin-bottom: 10px; }
-  .timeline { display: flex; align-items: center; margin-bottom: 12px; }
-  .tl-step { display: flex; flex-direction: column; align-items: center; flex: 1; }
-  .tl-dot { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; z-index: 1; }
-  .tl-dot.done { background: #00C896; color: white; }
-  .tl-dot.current { background: #1352A1; color: white; }
-  .tl-dot.pending { background: #E5E7EB; color: #9CA3AF; }
-  .tl-label { font-size: 8px; color: #6B7280; text-align: center; margin-top: 3px; line-height: 1.2; }
-  .tl-line { height: 2px; flex: 1; background: #E5E7EB; margin-top: -9px; }
-  .tl-line.done { background: #00C896; }
-  .oc-actions { display: flex; gap: 6px; }
-  .track-btn { flex: 1; background: #1352A1; color: white; border: none; border-radius: 8px; padding: 8px 0; font-size: 11px; font-weight: 600; cursor: pointer; }
-  .help-btn { flex: 1; background: white; color: #1352A1; border: 1.5px solid #1352A1; border-radius: 8px; padding: 8px 0; font-size: 11px; font-weight: 600; cursor: pointer; }
-  .delivery-info { display: flex; align-items: center; gap: 6px; background: #E8FFF7; border-radius: 8px; padding: 8px 10px; margin-bottom: 10px; }
-  .del-icon { font-size: 14px; }
-  .del-text { font-size: 10px; color: #00C896; font-weight: 600; }
+/* MEDICINES */
+.meds-hd{background:#fff;padding:9px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #f0f0f0}
+.back-ic{width:28px;height:28px;border-radius:50%;border:1px solid #f0f0f0;display:flex;align-items:center;justify-content:center}
+.back-ic svg{width:13px;height:13px;stroke:#333;fill:none;stroke-width:2}
+.meds-body{padding:10px}
+.cat-row{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:10px;padding-bottom:2px}
+.cat-row::-webkit-scrollbar{display:none}
+.cat-pill{background:#fff;border:1px solid #e8e8e8;border-radius:20px;padding:5px 12px;font-size:10px;color:#555;white-space:nowrap;font-weight:500;flex-shrink:0}
+.cat-pill.act{background:#36B37E;color:#fff;border-color:#36B37E}
+.med-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.med-gc{background:#fff;border-radius:12px;border:1px solid #f0f0f0;padding:10px;display:flex;flex-direction:column;gap:6px}
+.mgc-img{width:100%;height:60px;border-radius:8px;background:#f0faf6;display:flex;align-items:center;justify-content:center;position:relative}
+.mgc-img svg{width:36px;height:36px}
+.off-tag{position:absolute;top:4px;left:4px;background:#36B37E;color:#fff;font-size:8px;font-weight:700;padding:2px 5px;border-radius:4px}
+.mgc-name{font-size:11px;font-weight:700;color:#222;line-height:1.2}
+.mgc-gen{font-size:9px;color:#888}
+.mgc-pr-row{display:flex;align-items:baseline;gap:4px}
+.mgc-now{font-size:12px;font-weight:700;color:#36B37E}
+.mgc-mrp{font-size:9px;color:#aaa;text-decoration:line-through}
+.mgc-add{background:#36B37E;color:#fff;border:none;border-radius:6px;width:100%;padding:5px 0;font-size:10px;font-weight:700}
 
-  /* PROFILE SCREEN */
-  .profile-header { background: #1352A1; padding: 20px 14px 30px; }
-  .profile-avatar-row { display: flex; align-items: center; gap: 12px; }
-  .avatar { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: white; border: 2px solid rgba(255,255,255,0.4); }
-  .profile-name { color: white; font-size: 16px; font-weight: 700; }
-  .profile-phone { color: rgba(255,255,255,0.8); font-size: 11px; }
-  .edit-profile-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; border-radius: 20px; padding: 4px 12px; font-size: 10px; font-weight: 600; cursor: pointer; margin-top: 4px; display: inline-block; }
-  .stats-row { display: flex; background: white; margin: -14px 14px 0; border-radius: 12px; padding: 10px 0; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
-  .stat-item { flex: 1; text-align: center; border-right: 1px solid #DDE8F5; }
-  .stat-item:last-child { border-right: none; }
-  .stat-num { font-size: 18px; font-weight: 700; color: #1352A1; }
-  .stat-lbl { font-size: 9px; color: #6B7280; }
-  .menu-section { padding: 14px; }
-  .menu-group-title { font-size: 10px; font-weight: 700; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
-  .menu-item { background: white; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; margin-bottom: 4px; cursor: pointer; }
-  .menu-item-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
-  .menu-item-label { font-size: 12px; color: #111827; font-weight: 500; flex: 1; }
-  .menu-chevron { font-size: 14px; color: #9CA3AF; }
-  .menu-badge { background: #EF4444; color: white; border-radius: 10px; font-size: 9px; padding: 1px 7px; font-weight: 700; }
-
-  .trust-banner { background: #1352A1; padding: 10px 14px; display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap; gap: 6px; }
-  .trust-badge { display: flex; align-items: center; gap: 4px; }
-  .trust-badge span { color: rgba(255,255,255,0.9); font-size: 9px; font-weight: 500; }
-
-  .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .see-all { font-size: 10px; color: #1352A1; font-weight: 600; }
-
-  .scrollable-screen { overflow-y: auto; max-height: 580px; }
-  .scrollable-screen::-webkit-scrollbar { display: none; }
+/* CART */
+.cart-sc{background:#f7f7f7}
+.cart-hd{background:#fff;padding:9px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #f0f0f0}
+.cart-body{padding:8px}
+.ci-card{background:#fff;border-radius:12px;border:1px solid #f0f0f0;padding:10px;margin-bottom:6px;display:flex;gap:8px;align-items:center}
+.ci-img2{width:42px;height:42px;border-radius:8px;background:#f0faf6;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ci-img2 svg{width:24px;height:24px}
+.ci2-name{font-size:12px;font-weight:700;color:#222}
+.ci2-gen{font-size:9px;color:#888;margin-top:1px}
+.ci2-price{font-size:13px;font-weight:700;color:#36B37E;margin-left:auto;flex-shrink:0}
+.qty2{display:flex;align-items:center;border:1px solid #e8e8e8;border-radius:6px;overflow:hidden;margin-top:6px;width:fit-content}
+.q2b{width:22px;height:22px;background:#f5f5f5;border:none;color:#36B37E;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.q2n{width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#222}
+.presc-card{background:#FFF8E7;border-radius:10px;border:1px solid #FFE082;padding:10px;display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.presc-ic{width:28px;height:28px;border-radius:50%;background:#FFD54F;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.presc-ic svg{width:14px;height:14px;stroke:#7a5200;fill:none;stroke-width:1.5}
+.presc-t{font-size:11px;font-weight:700;color:#7a5200}
+.presc-s{font-size:9px;color:#a07400}
+.presc-btn{background:#FF9800;color:#fff;border:none;border-radius:7px;padding:5px 10px;font-size:10px;font-weight:700;flex-shrink:0}
+.bill-card2{background:#fff;border-radius:12px;border:1px solid #f0f0f0;padding:12px;margin-bottom:8px}
+.bill-t2{font-size:12px;font-weight:700;color:#222;margin-bottom:8px}
+.br2{display:flex;justify-content:space-between;padding:4px 0}
+.bl2{font-size:11px;color:#888}
+.bv2{font-size:11px;color:#222;font-weight:600}
+.bsave2{font-size:11px;color:#36B37E;font-weight:600}
+.bdash2{border:none;border-top:1px dashed #eee;margin:6px 0}
+.btot2{display:flex;justify-content:space-between;align-items:center}
+.btot-l2{font-size:13px;font-weight:700;color:#222}
+.btot-v2{font-size:15px;font-weight:700;color:#36B37E}
+.chk-btn2{background:#36B37E;color:#fff;border:none;border-radius:12px;width:100%;padding:12px 0;font-size:13px;font-weight:700}
 </style>
 
-<div class="app-wrap">
+<div class="wrap">
 
-  <div style="text-align:center;">
-    <div class="screen-label">Home Screen</div>
-    <div class="phone">
-      <div class="phone-notch"><div class="phone-notch-dot"></div></div>
-      <div class="phone-body">
-        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
-        <div class="home-header">
-          <div class="home-header-top">
-            <div class="location-row">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-              <div>
-                <div class="loc-label">Deliver to</div>
-                <div class="loc-val">Jamnagar, Gujarat ▾</div>
-              </div>
-            </div>
-            <div class="header-icons">
-              <div class="h-icon">
-                <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-              </div>
-              <div class="h-icon cart-badge">
-                <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-                <div class="badge">3</div>
-              </div>
-            </div>
+  <div><div class="lbl">Splash</div>
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="splash">
+      <div class="sp-logo">
+        <svg viewBox="0 0 40 40" fill="none"><path d="M20 6C12.3 6 6 12.3 6 20s6.3 14 14 14 14-6.3 14-14S27.7 6 20 6z" fill="rgba(255,255,255,0.2)"/><path d="M13 20h14M20 13v14" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>
+      </div>
+      <div class="sp-name">Kanzariya</div>
+      <div class="sp-tag">Better Health, Every Day</div>
+      <div class="sp-loader"><div class="sp-loader-bar"></div></div>
+    </div>
+  </div></div>
+
+  <div><div class="lbl">Login</div>
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="screen login-sc">
+      <div class="login-top">
+        <h2>Welcome back</h2>
+        <p>Sign in to continue to Kanzariya</p>
+      </div>
+      <div class="login-body">
+        <div class="fl">Mobile Number</div>
+        <div class="fi">+91 98765 43210</div>
+        <div class="fl">Password</div>
+        <div class="fi focused" style="letter-spacing:3px;color:#555;">••••••••</div>
+        <div style="text-align:right;margin-bottom:14px;"><span style="font-size:10px;color:#36B37E;font-weight:600;">Forgot password?</span></div>
+        <div class="btn-green">Sign In</div>
+        <div class="or-row"><div class="or-line"></div><div class="or-txt">OR</div><div class="or-line"></div></div>
+        <div class="social-btn"><div class="g-circle">G</div> Continue with Google</div>
+        <div class="login-foot">New here? <span>Create account</span></div>
+      </div>
+    </div>
+  </div></div>
+
+  <div><div class="lbl">Home</div>
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="sb" style="background:#36B37E"><span>9:41</span><span style="color:#fff">●●●</span></div>
+    <div class="screen">
+      <div class="home-hd">
+        <div class="home-hd-top">
+          <div class="loc-pill">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <div><small>Deliver to</small><span>Jamnagar, Gujarat ▾</span></div>
           </div>
-          <div class="search-bar">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <span>Search medicines, health products...</span>
-          </div>
-        </div>
-
-        <div class="scrollable-screen">
-          <div class="trust-banner">
-            <div class="trust-badge"><span>✓ WHO-GMP Certified</span></div>
-            <div class="trust-badge"><span>✓ ISO Certified</span></div>
-            <div class="trust-badge"><span>✓ Genuine Medicines</span></div>
-          </div>
-
-          <div class="home-body">
-            <div class="banner">
-              <div class="banner-text">
-                <div class="b-tag">LIMITED OFFER</div>
-                <h3>Get 25% Off<br>Generic Medicines</h3>
-                <p>Use code: FIRST15</p>
-              </div>
-              <div>
-                <button class="banner-btn">Shop Now</button>
-              </div>
+          <div class="hd-icons">
+            <div class="hd-ic bell-badge">
+              <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+              <div class="bb"></div>
             </div>
-            <div class="banner-dots">
-              <div class="dot active"></div>
-              <div class="dot"></div>
-              <div class="dot"></div>
-            </div>
-
-            <div style="margin-top: 14px;">
-              <div class="section-title">Quick Actions</div>
-              <div class="quick-actions">
-                <div class="qa-item"><div class="qa-icon qa1">💊</div><div class="qa-label">Order Medicines</div></div>
-                <div class="qa-item"><div class="qa-icon qa2">📋</div><div class="qa-label">Upload Rx</div></div>
-                <div class="qa-item"><div class="qa-icon qa3">🩺</div><div class="qa-label">Consult Doctor</div></div>
-                <div class="qa-item"><div class="qa-icon qa4">🧪</div><div class="qa-label">Lab Tests</div></div>
-                <div class="qa-item"><div class="qa-icon qa5">❤️</div><div class="qa-label">Health Records</div></div>
-                <div class="qa-item"><div class="qa-icon qa6">🎁</div><div class="qa-label">Offers</div></div>
-                <div class="qa-item"><div class="qa-icon qa7">📦</div><div class="qa-label">My Orders</div></div>
-                <div class="qa-item"><div class="qa-icon qa8">📞</div><div class="qa-label">Contact Us</div></div>
-              </div>
-            </div>
-
-            <div class="section-header">
-              <div class="section-title">Shop by Condition</div>
-              <span class="see-all">See All</span>
-            </div>
-            <div class="categories-scroll">
-              <div class="cat-chip active">All</div>
-              <div class="cat-chip">Diabetes</div>
-              <div class="cat-chip">Cardiology</div>
-              <div class="cat-chip">Pain Relief</div>
-              <div class="cat-chip">Women's Health</div>
-              <div class="cat-chip">Gastro</div>
-              <div class="cat-chip">Allergy</div>
-            </div>
-
-            <div class="section-header">
-              <div class="section-title">Featured Products</div>
-              <span class="see-all">View All</span>
-            </div>
-            <div class="products-scroll">
-              <div class="product-card">
-                <div class="product-img">
-                  <svg class="product-img-inner" viewBox="0 0 60 60"><rect x="10" y="15" width="40" height="30" rx="8" fill="#B5D4F4"/><rect x="18" y="22" width="24" height="16" rx="4" fill="#378ADD"/><rect x="24" y="26" width="12" height="8" rx="2" fill="white"/></svg>
-                  <div class="discount-badge">15% OFF</div>
-                </div>
-                <div class="p-brand">KANZALU</div>
-                <div class="p-generic">Luliconazole Cream 1%</div>
-                <div class="p-price-row"><span class="p-price">₹320</span><span class="p-mrp">₹380</span></div>
-                <button class="add-btn">Add to Cart</button>
-              </div>
-              <div class="product-card">
-                <div class="product-img">
-                  <svg class="product-img-inner" viewBox="0 0 60 60"><ellipse cx="30" cy="30" rx="18" ry="10" fill="#97C459"/><ellipse cx="30" cy="26" rx="18" ry="10" fill="#C0DD97"/><rect x="12" y="20" width="36" height="10" rx="5" fill="#639922"/></svg>
-                  <div class="discount-badge">10% OFF</div>
-                  <div class="rx-badge">Rx</div>
-                </div>
-                <div class="p-brand">KANZA-DSR</div>
-                <div class="p-generic">Pantoprazole + Domperidone</div>
-                <div class="p-price-row"><span class="p-price">₹117</span><span class="p-mrp">₹130</span></div>
-                <button class="add-btn">Add to Cart</button>
-              </div>
-              <div class="product-card">
-                <div class="product-img">
-                  <svg class="product-img-inner" viewBox="0 0 60 60"><rect x="20" y="10" width="20" height="35" rx="6" fill="#FAC775"/><rect x="24" y="14" width="12" height="8" rx="2" fill="#EF9F27"/><circle cx="30" cy="34" r="5" fill="white"/></svg>
-                  <div class="discount-badge">8% OFF</div>
-                </div>
-                <div class="p-brand">KANDI-650</div>
-                <div class="p-generic">Paracetamol 650mg</div>
-                <div class="p-price-row"><span class="p-price">₹21</span><span class="p-mrp">₹23</span></div>
-                <button class="add-btn">Add to Cart</button>
-              </div>
-              <div class="product-card">
-                <div class="product-img">
-                  <svg class="product-img-inner" viewBox="0 0 60 60"><rect x="15" y="18" width="30" height="22" rx="6" fill="#F4C0D1"/><rect x="22" y="24" width="16" height="10" rx="3" fill="#D4537E"/><rect x="26" y="27" width="8" height="4" rx="1" fill="white"/></svg>
-                  <div class="discount-badge">12% OFF</div>
-                  <div class="rx-badge">Rx</div>
-                </div>
-                <div class="p-brand">LEVOZAR</div>
-                <div class="p-generic">Levocetirizine + Montelukast</div>
-                <div class="p-price-row"><span class="p-price">₹59</span><span class="p-mrp">₹67</span></div>
-                <button class="add-btn">Add to Cart</button>
-              </div>
-            </div>
-
-            <div class="section-title" style="margin-bottom:8px;">Why Choose Kanzariya?</div>
-            <div class="trust-row">
-              <div class="trust-item"><div class="trust-dot">✓</div><div class="trust-text">WHO-GMP Certified Medicines</div></div>
-              <div class="trust-item"><div class="trust-dot">🚚</div><div class="trust-text">Free Home Delivery</div></div>
-              <div class="trust-item"><div class="trust-dot">%</div><div class="trust-text">Flat 15-25% Discount</div></div>
-              <div class="trust-item"><div class="trust-dot">↩</div><div class="trust-text">Easy Return Policy</div></div>
+            <div class="hd-ic">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             </div>
           </div>
         </div>
+        <div class="srch">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>Search doctors, medicines, tests...</span>
+        </div>
+      </div>
+      <div class="home-body">
+        <div class="sec-hd" style="margin-bottom:10px;"><div class="sec-t">What do you need?</div></div>
+        <div class="svc-grid">
+          <div class="svc-card">
+            <div class="svc-ic" style="background:#E3FBF0;"><svg viewBox="0 0 24 24" stroke="#1D9E75"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></svg></div>
+            <div class="svc-name">Order Medicines</div>
+            <div class="svc-desc">Genuine meds at doorstep</div>
+            <div class="svc-arrow">→</div>
+          </div>
+          <div class="svc-card">
+            <div class="svc-ic" style="background:#FFF0E0;"><svg viewBox="0 0 24 24" stroke="#c47a00"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg></div>
+            <div class="svc-name">Upload Rx</div>
+            <div class="svc-desc">Upload prescription</div>
+            <div class="svc-arrow">→</div>
+          </div>
+          <div class="svc-card">
+            <div class="svc-ic" style="background:#EDE9FF;"><svg viewBox="0 0 24 24" stroke="#534AB7"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M19 8l2 2-2 2"/></svg></div>
+            <div class="svc-name">Consult Doctor</div>
+            <div class="svc-desc">Online consultation</div>
+            <div class="svc-arrow">→</div>
+          </div>
+          <div class="svc-card">
+            <div class="svc-ic" style="background:#FFE9E9;"><svg viewBox="0 0 24 24" stroke="#D85A30"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg></div>
+            <div class="svc-name">Lab Tests</div>
+            <div class="svc-desc">Book at home or lab</div>
+            <div class="svc-arrow">→</div>
+          </div>
+        </div>
 
-        <div class="bottom-nav">
-          <div class="nav-item active">
-            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
-            <div class="nav-label">Home</div>
-            <div class="nav-dot"></div>
+        <div class="sec-hd"><div class="sec-t">Consult by specialty</div><span class="see-all">See all</span></div>
+        <div class="chips">
+          <div class="chip act">All</div>
+          <div class="chip">Cardiologist</div>
+          <div class="chip">Diabetologist</div>
+          <div class="chip">Dermatologist</div>
+          <div class="chip">Gynecologist</div>
+          <div class="chip">Pediatrician</div>
+        </div>
+
+        <div class="doc-card">
+          <div class="doc-ava" style="background:#185FA5;">DR</div>
+          <div class="doc-info">
+            <div class="doc-name">Dr. Ramesh Patel</div>
+            <div class="doc-spec">Cardiologist · 14 yrs exp</div>
+            <div class="doc-rat">
+              <div class="rat-badge">4.8 ★</div>
+              <div class="rat-cnt">320 reviews</div>
+            </div>
+            <div class="doc-fee">₹500 <small>· Next available today</small></div>
+            <div class="doc-avail">Available in 30 mins</div>
           </div>
-          <div class="nav-item">
-            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-            <div class="nav-label">Products</div>
+          <button class="consult-btn">Consult</button>
+        </div>
+
+        <div class="doc-card">
+          <div class="doc-ava" style="background:#993556;">SK</div>
+          <div class="doc-info">
+            <div class="doc-name">Dr. Sunita Kaur</div>
+            <div class="doc-spec">Diabetologist · 9 yrs exp</div>
+            <div class="doc-rat">
+              <div class="rat-badge">4.6 ★</div>
+              <div class="rat-cnt">214 reviews</div>
+            </div>
+            <div class="doc-fee">₹400 <small>· Next available 2 PM</small></div>
+            <div class="doc-avail">Available in 1 hr</div>
           </div>
-          <div class="nav-item">
-            <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16,8 20,8 23,11 23,16 16,16 16,8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-            <div class="nav-label">Orders</div>
+          <button class="consult-btn">Consult</button>
+        </div>
+
+        <div class="sec-hd" style="margin-top:4px;"><div class="sec-t">Our products</div><span class="see-all">View all</span></div>
+        <div class="med-card">
+          <div class="med-img">
+            <svg viewBox="0 0 30 30" fill="none"><rect x="4" y="6" width="22" height="18" rx="5" fill="#C0DD97"/><rect x="9" y="10" width="12" height="10" rx="3" fill="#3B6D11"/></svg>
           </div>
-          <div class="nav-item">
-            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-            <div class="nav-label">Consult</div>
+          <div class="med-info">
+            <div class="med-name">KANZALU Cream</div>
+            <div class="med-gen">Luliconazole 1% · 30g</div>
           </div>
-          <div class="nav-item">
-            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <div class="nav-label">Profile</div>
+          <div class="med-pr">
+            <div class="med-now">₹320</div>
+            <div class="med-mrp">₹380</div>
+            <div class="med-off">15% OFF</div>
+          </div>
+          <div class="add-btn-sm">+</div>
+        </div>
+        <div class="med-card">
+          <div class="med-img">
+            <svg viewBox="0 0 30 30" fill="none"><ellipse cx="15" cy="15" rx="10" ry="6" fill="#FAC775"/><ellipse cx="15" cy="12" rx="10" ry="6" fill="#FAEEDA"/><rect x="5" y="10" width="20" height="6" rx="3" fill="#EF9F27"/></svg>
+          </div>
+          <div class="med-info">
+            <div class="med-name">KANDI-650</div>
+            <div class="med-gen">Paracetamol 650mg</div>
+          </div>
+          <div class="med-pr">
+            <div class="med-now">₹21</div>
+            <div class="med-mrp">₹23</div>
+            <div class="med-off">8% OFF</div>
+          </div>
+          <div class="add-btn-sm">+</div>
+        </div>
+      </div>
+      <div class="bnav">
+        <div class="ni act"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg><span>Home</span></div>
+        <div class="ni"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Doctors</span></div>
+        <div class="ni"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M12 8v8M8 12h8"/></svg><span>Medicines</span></div>
+        <div class="ni"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16,8 20,8 23,11 23,16 16,16"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><span>Orders</span></div>
+        <div class="ni"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Profile</span></div>
+      </div>
+    </div>
+  </div></div>
+
+  <div><div class="lbl">Doctor detail</div>
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="sb lt" style="background:#f7f7f7"><span style="color:#222">9:41</span><span style="color:#222">●●●</span></div>
+    <div class="screen" style="background:#f7f7f7">
+      <div class="meds-hd">
+        <div class="back-ic"><svg viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg></div>
+        <div style="font-size:13px;font-weight:700;color:#222;flex:1">Doctor Profile</div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      </div>
+      <div class="dd-hero">
+        <div class="dd-top">
+          <div class="dd-ava" style="background:#185FA5">DR</div>
+          <div class="dd-meta">
+            <h2>Dr. Ramesh Patel</h2>
+            <p>Cardiologist · MBBS, MD</p>
+            <p>14 years experience</p>
+            <div class="verified"><span>✓ Verified</span></div>
+          </div>
+        </div>
+        <div class="dd-stats">
+          <div class="dd-stat"><div class="dd-stat-n" style="color:#36B37E">4.8★</div><div class="dd-stat-l">Rating</div></div>
+          <div class="dd-stat"><div class="dd-stat-n">320</div><div class="dd-stat-l">Reviews</div></div>
+          <div class="dd-stat"><div class="dd-stat-n">14yr</div><div class="dd-stat-l">Experience</div></div>
+        </div>
+      </div>
+      <div class="dd-section">
+        <div class="dd-sec-t">Choose a time slot</div>
+        <div style="font-size:11px;color:#888;margin-bottom:8px">Today, May 2</div>
+        <div class="slot-grid">
+          <div class="slot na">10:00 AM</div>
+          <div class="slot na">11:00 AM</div>
+          <div class="slot sel">12:00 PM</div>
+          <div class="slot">2:00 PM</div>
+          <div class="slot">3:00 PM</div>
+          <div class="slot">4:30 PM</div>
+        </div>
+        <div class="fee-row"><span class="fee-l">Consultation fee</span><span class="fee-v">₹500</span></div>
+        <div class="fee-row"><span class="fee-l">Platform fee</span><span class="fee-v">₹0</span></div>
+        <div class="fee-row"><span class="fee-l">Mode</span><span class="fee-v" style="color:#36B37E">Video call</span></div>
+        <div style="height:10px"></div>
+        <button class="book-btn">Book Appointment · ₹500</button>
+      </div>
+    </div>
+  </div></div>
+
+  <div><div class="lbl">Medicines</div>
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="sb lt" style="background:#f7f7f7"><span style="color:#222">9:41</span><span style="color:#222">●●●</span></div>
+    <div class="screen" style="background:#f7f7f7">
+      <div class="meds-hd">
+        <div class="back-ic"><svg viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg></div>
+        <div style="font-size:13px;font-weight:700;color:#222;flex:1">Medicines</div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+      </div>
+      <div class="meds-body">
+        <div style="background:#fff;border-radius:10px;border:1px solid #f0f0f0;display:flex;align-items:center;padding:8px 12px;gap:8px;margin-bottom:10px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span style="font-size:11px;color:#aaa">Search medicines by name...</span>
+        </div>
+        <div class="cat-row">
+          <div class="cat-pill act">All</div>
+          <div class="cat-pill">Pain Relief</div>
+          <div class="cat-pill">Gastro</div>
+          <div class="cat-pill">Cardiology</div>
+          <div class="cat-pill">Skin Care</div>
+          <div class="cat-pill">Allergy</div>
+        </div>
+        <div class="med-grid">
+          <div class="med-gc">
+            <div class="mgc-img">
+              <svg viewBox="0 0 40 40" fill="none"><rect x="6" y="8" width="28" height="24" rx="8" fill="#B5D4F4"/><rect x="12" y="14" width="16" height="12" rx="4" fill="#1352A1"/></svg>
+              <div class="off-tag">15%</div>
+            </div>
+            <div class="mgc-name">KANZALU Cream</div>
+            <div class="mgc-gen">Luliconazole 1%</div>
+            <div class="mgc-pr-row"><span class="mgc-now">₹320</span><span class="mgc-mrp">₹380</span></div>
+            <button class="mgc-add">Add to cart</button>
+          </div>
+          <div class="med-gc">
+            <div class="mgc-img">
+              <svg viewBox="0 0 40 40" fill="none"><ellipse cx="20" cy="20" rx="13" ry="8" fill="#97C459"/><ellipse cx="20" cy="16" rx="13" ry="8" fill="#C0DD97"/><rect x="7" y="14" width="26" height="8" rx="4" fill="#639922"/></svg>
+              <div class="off-tag">10%</div>
+            </div>
+            <div class="mgc-name">KANZA-DSR</div>
+            <div class="mgc-gen">Pantoprazole + Dom.</div>
+            <div class="mgc-pr-row"><span class="mgc-now">₹117</span><span class="mgc-mrp">₹130</span></div>
+            <button class="mgc-add">Add to cart</button>
+          </div>
+          <div class="med-gc">
+            <div class="mgc-img">
+              <svg viewBox="0 0 40 40" fill="none"><rect x="14" y="6" width="12" height="28" rx="6" fill="#FAC775"/><rect x="16" y="10" width="8" height="7" rx="2" fill="#EF9F27"/></svg>
+              <div class="off-tag">8%</div>
+            </div>
+            <div class="mgc-name">KANDI-650</div>
+            <div class="mgc-gen">Paracetamol 650mg</div>
+            <div class="mgc-pr-row"><span class="mgc-now">₹21</span><span class="mgc-mrp">₹23</span></div>
+            <button class="mgc-add">Add to cart</button>
+          </div>
+          <div class="med-gc">
+            <div class="mgc-img">
+              <svg viewBox="0 0 40 40" fill="none"><rect x="8" y="12" width="24" height="16" rx="6" fill="#F4C0D1"/><rect x="14" y="17" width="12" height="6" rx="2" fill="#D4537E"/></svg>
+              <div class="off-tag">12%</div>
+            </div>
+            <div class="mgc-name">LEVOZAR</div>
+            <div class="mgc-gen">Levocetirizine + Mon.</div>
+            <div class="mgc-pr-row"><span class="mgc-now">₹59</span><span class="mgc-mrp">₹67</span></div>
+            <button class="mgc-add">Add to cart</button>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </div></div>
 
-  <div style="text-align:center;">
-    <div class="screen-label">Product Detail</div>
-    <div class="phone">
-      <div class="phone-notch"><div class="phone-notch-dot"></div></div>
-      <div class="phone-body">
-        <div class="status-bar" style="background:#F7FAFF;"><span style="color:#111827;">9:41</span><span style="color:#111827;">●●●</span></div>
-        <div class="pd-header">
-          <div class="back-btn"><svg viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg></div>
-          <div class="pd-header-title">Product Details</div>
-          <div style="display:flex;gap:8px;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="1.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+  <div><div class="lbl">Cart</div>
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="sb lt" style="background:#f7f7f7"><span style="color:#222">9:41</span><span style="color:#222">●●●</span></div>
+    <div class="cart-sc screen">
+      <div class="cart-hd">
+        <div class="back-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg></div>
+        <div style="font-size:13px;font-weight:700;color:#222;flex:1">My Cart</div>
+        <span style="font-size:11px;color:#888">3 items</span>
+      </div>
+      <div class="cart-body">
+        <div class="ci-card">
+          <div class="ci-img2">
+            <svg viewBox="0 0 30 30" fill="none"><rect x="4" y="6" width="22" height="18" rx="5" fill="#B5D4F4"/><rect x="9" y="10" width="12" height="10" rx="3" fill="#1352A1"/></svg>
           </div>
+          <div style="flex:1">
+            <div class="ci2-name">KANZALU Cream</div>
+            <div class="ci2-gen">Luliconazole 1% · 30g</div>
+            <div class="qty2"><div class="q2b">−</div><div class="q2n">1</div><div class="q2b">+</div></div>
+          </div>
+          <div class="ci2-price">₹320</div>
         </div>
-        <div class="scrollable-screen" style="background:white;">
-          <div class="pd-image-section">
-            <div class="pd-img-main">
-              <svg viewBox="0 0 100 100"><rect x="15" y="20" width="70" height="55" rx="14" fill="#E8F4FD"/><rect x="25" y="30" width="50" height="35" rx="8" fill="#B5D4F4"/><rect x="35" y="40" width="30" height="15" rx="4" fill="#1352A1"/><text x="50" y="51" text-anchor="middle" fill="white" font-size="7" font-weight="700">KANZALU</text></svg>
-            </div>
-            <div class="pd-thumbs">
-              <div class="pd-thumb active"></div>
-              <div class="pd-thumb"></div>
-              <div class="pd-thumb"></div>
-            </div>
+        <div class="ci-card">
+          <div class="ci-img2">
+            <svg viewBox="0 0 30 30" fill="none"><rect x="10" y="4" width="10" height="22" rx="5" fill="#FAC775"/><rect x="12" y="8" width="6" height="5" rx="1.5" fill="#EF9F27"/></svg>
           </div>
-          <div class="pd-info">
-            <div class="pd-rx"><span>Rx Required</span></div>
-            <div class="pd-brand">KANZALU Cream</div>
-            <div class="pd-comp">Luliconazole Cream IP 1% w/w (30g)</div>
-            <div class="pd-mfr">
-              <span>By Kanzariya Pharmaceutical Pvt Ltd</span>
-              <div class="pd-mfr-badge">WHO-GMP</div>
-            </div>
-            <div class="pd-price-section">
-              <div class="pd-price-main">₹320</div>
-              <div class="pd-mrp">MRP ₹380</div>
-              <div class="pd-save"><span>Save ₹60 (15% OFF)</span></div>
-            </div>
-            <div class="qty-add-row">
-              <div class="qty-sel">
-                <button class="qty-btn">−</button>
-                <div class="qty-num">1</div>
-                <button class="qty-btn">+</button>
-              </div>
-              <button class="add-cart-btn">Add to Cart</button>
-              <button class="buy-now-btn">Buy Now</button>
-            </div>
-            <div class="offer-row">
-              <span>🎁 10% cashback on first order · Free delivery above ₹500</span>
-            </div>
+          <div style="flex:1">
+            <div class="ci2-name">KANDI-650</div>
+            <div class="ci2-gen">Paracetamol 650mg</div>
+            <div class="qty2"><div class="q2b">−</div><div class="q2n">2</div><div class="q2b">+</div></div>
           </div>
-          <div class="pd-tabs">
-            <div class="pd-tab active">Details</div>
-            <div class="pd-tab">Composition</div>
-            <div class="pd-tab">Manufacturer</div>
-            <div class="pd-tab">Reviews</div>
-          </div>
-          <div class="pd-tab-content">
-            <div class="pd-row"><span class="pd-row-label">Uses</span><span class="pd-row-val">Fungal skin infections, Ringworm, Athlete's foot</span></div>
-            <div class="pd-row"><span class="pd-row-label">Direction</span><span class="pd-row-val">Apply thin layer, twice daily</span></div>
-            <div class="pd-row"><span class="pd-row-label">Side Effects</span><span class="pd-row-val">Mild itching, Contact dermatitis</span></div>
-            <div class="pd-row"><span class="pd-row-label">Storage</span><span class="pd-row-val">Store below 30°C, away from direct sunlight</span></div>
-            <div class="pd-row"><span class="pd-row-label">Pack Size</span><span class="pd-row-val">30g Tube</span></div>
-            <div class="rating-row">
-              <div class="stars">★★★★½</div>
-              <div class="rating-num">4.5</div>
-              <div class="rating-count">(128 reviews)</div>
-            </div>
-          </div>
+          <div class="ci2-price">₹42</div>
         </div>
+        <div class="ci-card">
+          <div class="ci-img2">
+            <svg viewBox="0 0 30 30" fill="none"><ellipse cx="15" cy="15" rx="10" ry="6" fill="#97C459"/><ellipse cx="15" cy="12" rx="10" ry="6" fill="#C0DD97"/><rect x="5" y="10" width="20" height="6" rx="3" fill="#639922"/></svg>
+          </div>
+          <div style="flex:1">
+            <div class="ci2-name">KANZA-DSR</div>
+            <div class="ci2-gen">Pantoprazole + Dom.</div>
+            <div class="qty2"><div class="q2b">−</div><div class="q2n">1</div><div class="q2b">+</div></div>
+          </div>
+          <div class="ci2-price">₹117</div>
+        </div>
+
+        <div class="presc-card">
+          <div class="presc-ic"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></div>
+          <div style="flex:1"><div class="presc-t">Prescription needed</div><div class="presc-s">1 item requires Rx</div></div>
+          <button class="presc-btn">Upload</button>
+        </div>
+
+        <div class="bill-card2">
+          <div class="bill-t2">Bill summary</div>
+          <div class="br2"><span class="bl2">Item total</span><span class="bv2">₹479</span></div>
+          <div class="br2"><span class="bl2">Delivery</span><span class="bsave2">Free</span></div>
+          <div class="br2"><span class="bl2">Discount (15%)</span><span class="bsave2">−₹72</span></div>
+          <div class="bdash2"></div>
+          <div class="btot2"><span class="btot-l2">Total payable</span><span class="btot-v2">₹407</span></div>
+          <div style="background:#E3FBF0;border-radius:6px;padding:5px 8px;margin-top:8px;font-size:10px;color:#1a7a50;font-weight:600">You save ₹72 on this order</div>
+        </div>
+        <button class="chk-btn2">Proceed to checkout</button>
       </div>
     </div>
-  </div>
-
-  <div style="text-align:center;">
-    <div class="screen-label">Cart & Checkout</div>
-    <div class="phone">
-      <div class="phone-notch"><div class="phone-notch-dot"></div></div>
-      <div class="phone-body">
-        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
-        <div class="cart-header">
-          <div class="back-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg></div>
-          <div style="font-size:14px;font-weight:700;color:#111827;flex:1;">My Cart</div>
-          <div style="font-size:11px;color:#6B7280;">3 items</div>
-        </div>
-        <div class="scrollable-screen">
-          <div class="cart-body">
-            <div class="cart-item">
-              <div class="cart-item-top">
-                <div class="ci-img">
-                  <svg viewBox="0 0 40 40"><rect x="5" y="8" width="30" height="22" rx="6" fill="#B5D4F4"/><rect x="12" y="13" width="16" height="12" rx="3" fill="#1352A1"/></svg>
-                </div>
-                <div class="ci-info">
-                  <div class="ci-brand">KANZALU Cream</div>
-                  <div class="ci-generic">Luliconazole 1% · 30g</div>
-                  <div class="ci-rx"><span>Rx Required</span></div>
-                </div>
-                <div style="text-align:right;">
-                  <div style="font-size:13px;font-weight:700;color:#1352A1;">₹320</div>
-                  <div style="font-size:9px;color:#9CA3AF;text-decoration:line-through;">₹380</div>
-                </div>
-              </div>
-              <div class="cart-item-bot">
-                <div class="ci-qty">
-                  <div class="ci-qbtn">−</div>
-                  <div class="ci-qnum">1</div>
-                  <div class="ci-qbtn">+</div>
-                </div>
-                <div style="display:flex;gap:12px;align-items:center;">
-                  <span style="font-size:9px;color:#6B7280;cursor:pointer;">Save for Later</span>
-                  <span class="ci-remove">Remove</span>
-                </div>
-              </div>
-            </div>
-            <div class="cart-item">
-              <div class="cart-item-top">
-                <div class="ci-img">
-                  <svg viewBox="0 0 40 40"><ellipse cx="20" cy="20" rx="13" ry="8" fill="#97C459"/><ellipse cx="20" cy="17" rx="13" ry="8" fill="#C0DD97"/><rect x="7" y="13" width="26" height="8" rx="4" fill="#639922"/></svg>
-                </div>
-                <div class="ci-info">
-                  <div class="ci-brand">KANZA-DSR</div>
-                  <div class="ci-generic">Pantoprazole + Domperidone · 10 Caps</div>
-                </div>
-                <div style="text-align:right;">
-                  <div style="font-size:13px;font-weight:700;color:#1352A1;">₹117</div>
-                  <div style="font-size:9px;color:#9CA3AF;text-decoration:line-through;">₹130</div>
-                </div>
-              </div>
-              <div class="cart-item-bot">
-                <div class="ci-qty">
-                  <div class="ci-qbtn">−</div>
-                  <div class="ci-qnum">2</div>
-                  <div class="ci-qbtn">+</div>
-                </div>
-                <div style="display:flex;gap:12px;align-items:center;">
-                  <span style="font-size:9px;color:#6B7280;cursor:pointer;">Save for Later</span>
-                  <span class="ci-remove">Remove</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="coupon-row">
-              <div class="coupon-icon">🎟</div>
-              <div class="coupon-text">
-                <div class="coupon-title">Apply Coupon / Promo Code</div>
-                <div class="coupon-sub">Save more with available offers</div>
-              </div>
-              <div class="coupon-arrow">›</div>
-            </div>
-
-            <div class="bill-card">
-              <div class="bill-title">Bill Summary</div>
-              <div class="bill-row"><span class="bill-label">Item Total</span><span class="bill-val">₹554</span></div>
-              <div class="bill-row"><span class="bill-label">Delivery Charges</span><span class="bill-val" style="color:#00C896;">FREE</span></div>
-              <div class="bill-row"><span class="bill-label">Discount (FIRST15)</span><span class="bill-save">−₹83</span></div>
-              <hr class="bill-divider">
-              <div class="bill-total-row">
-                <span class="bill-total-label">Total Payable</span>
-                <span class="bill-total-val">₹471</span>
-              </div>
-              <div style="background:#E8FFF7;border-radius:6px;padding:5px 8px;margin-top:8px;">
-                <span style="font-size:10px;color:#00C896;font-weight:600;">You save ₹83 on this order 🎉</span>
-              </div>
-            </div>
-
-            <div style="background:#FFF3E8;border-radius:10px;padding:10px;display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-              <span style="font-size:14px;">📋</span>
-              <div style="flex:1;">
-                <div style="font-size:11px;font-weight:600;color:#FF9800;">Prescription Required</div>
-                <div style="font-size:9px;color:#6B7280;">1 item needs prescription to proceed</div>
-              </div>
-              <button style="background:#FF9800;color:white;border:none;border-radius:7px;padding:5px 10px;font-size:10px;font-weight:600;cursor:pointer;">Upload</button>
-            </div>
-
-            <button class="checkout-btn">
-              Proceed to Checkout <span class="checkout-arrow">→</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div style="text-align:center;">
-    <div class="screen-label">Order Tracking</div>
-    <div class="phone">
-      <div class="phone-notch"><div class="phone-notch-dot"></div></div>
-      <div class="phone-body">
-        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
-        <div class="cart-header">
-          <div class="back-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg></div>
-          <div style="font-size:14px;font-weight:700;color:#111827;flex:1;">My Orders</div>
-        </div>
-        <div class="orders-tabs">
-          <div class="order-tab active">Ongoing (2)</div>
-          <div class="order-tab">Delivered</div>
-          <div class="order-tab">Cancelled</div>
-        </div>
-        <div class="scrollable-screen">
-          <div class="orders-body">
-            <div class="order-card">
-              <div class="oc-top">
-                <div>
-                  <div class="oc-id">Order #KPL-20250428-001</div>
-                  <div style="font-size:9px;color:#9CA3AF;">28 Apr 2025, 10:32 AM</div>
-                </div>
-                <div class="oc-status shipped">Shipped</div>
-              </div>
-              <div class="oc-items">KANZALU Cream + 2 more items</div>
-              <div class="oc-total">Total: ₹471 · Paid via UPI</div>
-              <div class="delivery-info">
-                <span class="del-icon">🚚</span>
-                <span class="del-text">Expected delivery: Tomorrow, 30 Apr</span>
-              </div>
-              <div class="timeline">
-                <div class="tl-step">
-                  <div class="tl-dot done">✓</div>
-                  <div class="tl-label">Confirmed</div>
-                </div>
-                <div class="tl-line done"></div>
-                <div class="tl-step">
-                  <div class="tl-dot done">✓</div>
-                  <div class="tl-label">Packed</div>
-                </div>
-                <div class="tl-line done"></div>
-                <div class="tl-step">
-                  <div class="tl-dot current">→</div>
-                  <div class="tl-label">Shipped</div>
-                </div>
-                <div class="tl-line"></div>
-                <div class="tl-step">
-                  <div class="tl-dot pending">○</div>
-                  <div class="tl-label">Out for Delivery</div>
-                </div>
-                <div class="tl-line"></div>
-                <div class="tl-step">
-                  <div class="tl-dot pending">○</div>
-                  <div class="tl-label">Delivered</div>
-                </div>
-              </div>
-              <div class="oc-actions">
-                <button class="track-btn">Track Order</button>
-                <button class="help-btn">Need Help?</button>
-              </div>
-            </div>
-
-            <div class="order-card">
-              <div class="oc-top">
-                <div>
-                  <div class="oc-id">Order #KPL-20250425-002</div>
-                  <div style="font-size:9px;color:#9CA3AF;">25 Apr 2025, 3:15 PM</div>
-                </div>
-                <div class="oc-status">Processing</div>
-              </div>
-              <div class="oc-items">KANZAFLAM-P Tablets</div>
-              <div class="oc-total">Total: ₹46 · Cash on Delivery</div>
-              <div class="timeline">
-                <div class="tl-step">
-                  <div class="tl-dot done">✓</div>
-                  <div class="tl-label">Confirmed</div>
-                </div>
-                <div class="tl-line done"></div>
-                <div class="tl-step">
-                  <div class="tl-dot current">→</div>
-                  <div class="tl-label">Packed</div>
-                </div>
-                <div class="tl-line"></div>
-                <div class="tl-step">
-                  <div class="tl-dot pending">○</div>
-                  <div class="tl-label">Shipped</div>
-                </div>
-                <div class="tl-line"></div>
-                <div class="tl-step">
-                  <div class="tl-dot pending">○</div>
-                  <div class="tl-label">Delivery</div>
-                </div>
-                <div class="tl-line"></div>
-                <div class="tl-step">
-                  <div class="tl-dot pending">○</div>
-                  <div class="tl-label">Delivered</div>
-                </div>
-              </div>
-              <div class="oc-actions">
-                <button class="track-btn">Track Order</button>
-                <button class="help-btn" style="color:#EF4444;border-color:#EF4444;">Cancel</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div style="text-align:center;">
-    <div class="screen-label">Profile</div>
-    <div class="phone">
-      <div class="phone-notch"><div class="phone-notch-dot"></div></div>
-      <div class="phone-body">
-        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
-        <div class="scrollable-screen" style="background:#F7FAFF;">
-          <div class="profile-header">
-            <div class="profile-avatar-row">
-              <div class="avatar">R</div>
-              <div>
-                <div class="profile-name">Rahul Sharma</div>
-                <div class="profile-phone">+91 98765 43210</div>
-                <div class="edit-profile-btn">Edit Profile</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="stats-row">
-            <div class="stat-item"><div class="stat-num">12</div><div class="stat-lbl">Orders</div></div>
-            <div class="stat-item"><div class="stat-num">3</div><div class="stat-lbl">Prescriptions</div></div>
-            <div class="stat-item"><div class="stat-num">₹240</div><div class="stat-lbl">Saved</div></div>
-          </div>
-
-          <div class="menu-section" style="padding-top:22px;">
-            <div class="menu-group-title">Healthcare</div>
-            <div class="menu-item">
-              <div class="menu-item-icon" style="background:#E8F4FD;">📦</div>
-              <div class="menu-item-label">My Orders</div>
-              <div class="menu-badge">2</div>
-              <div class="menu-chevron">›</div>
-            </div>
-            <div class="menu-item">
-              <div class="menu-item-icon" style="background:#FFF3E8;">📋</div>
-              <div class="menu-item-label">My Prescriptions</div>
-              <div class="menu-chevron">›</div>
-            </div>
-            <div class="menu-item">
-              <div class="menu-item-icon" style="background:#E8FFF7;">❤️</div>
-              <div class="menu-item-label">Health Records</div>
-              <div class="menu-chevron">›</div>
-            </div>
-            <div class="menu-item">
-              <div class="menu-item-icon" style="background:#EEF0FF;">🧪</div>
-              <div class="menu-item-label">Lab Test Reports</div>
-              <div class="menu-chevron">›</div>
-            </div>
-
-            <div class="menu-group-title" style="margin-top:12px;">Account</div>
-            <div class="menu-item">
-              <div class="menu-item-icon" style="background:#FFFAE8;">🎁</div>
-              <div class="menu-item-label">Offers & Coupons</div>
-              <div class="menu-chevron">›</div>
-            </div>
-            <div class="menu-item">
-              <div class="menu-item-icon" style="background:#F0FFF4;">📍</div>
-              <div class="menu-item-label">Saved Addresses</div>
-              <div class="menu-chevron">›</div>
-            </div>
-            <div class="menu-item">
-              <div class="menu-item-icon" style="background:#FFF5F5;">🔔</div>
-              <div class="menu-item-label">Notifications</div>
-              <div class="menu-chevron">›</div>
-            </div>
-
-            <div class="menu-group-title" style="margin-top:12px;">Support</div>
-            <div class="menu-item">
-              <div class="menu-item-icon" style="background:#E8F4FD;">📞</div>
-              <div class="menu-item-label">Customer Support</div>
-              <div class="menu-chevron">›</div>
-            </div>
-            <div class="menu-item">
-              <div class="menu-item-icon" style="background:#F7FAFF;">ℹ️</div>
-              <div class="menu-item-label">About Kanzariya</div>
-              <div class="menu-chevron">›</div>
-            </div>
-            <div class="menu-item" style="margin-top:8px;">
-              <div class="menu-item-icon" style="background:#FFF5F5;">🚪</div>
-              <div class="menu-item-label" style="color:#EF4444;">Logout</div>
-              <div class="menu-chevron" style="color:#EF4444;">›</div>
-            </div>
-          </div>
-
-          <div style="text-align:center;padding:10px;margin-bottom:8px;">
-            <div style="font-size:10px;color:#6B7280;">Kanzariya Pharmaceutical Private Limited</div>
-            <div style="font-size:9px;color:#9CA3AF;">CIN: U21001GJ2025PTC170635</div>
-            <div style="font-size:9px;color:#9CA3AF;">v1.0.0 · WHO-GMP Certified</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  </div></div>
 
 </div>
